@@ -35,6 +35,13 @@ spec:
             httpGet:
               path: /
               port: http
+          env:
+{{- range $key, $val := .Values.extra_env }}
+{{- if $val }}
+            - name: {{ $key | upper }}
+              value: "{{ tpl $val $ }}"
+{{- end }}
+{{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
